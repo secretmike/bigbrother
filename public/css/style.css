@@ -29,3 +29,8 @@ header #right
 {
     max-width:none;
 }
+
+form table tr td, form table tr th
+{
+    width: 33.33%;
+}

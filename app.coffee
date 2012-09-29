@@ -30,6 +30,16 @@ app.use express.static(__dirname + "/public")
 app.get "/", (req, res) ->
     res.render "index"
 
+# Tracker configuration
+app.get "/trackers", (req, res) ->
+    res.render "trackers" # TODO:  fetch from redis
+
+app.post "/trackers/pin", (req, res) ->
+    # TODO:  Client sends the fields: id (the session id), pin (the pin)
+    
+app.post "/trackers/colour", (req, res) ->
+    # TODO:  Client sends the fields: id (the session id), colour (the colour)
+
 # Update URL for adding new data
 app.all "/update", (req, res) ->
     console.log "HELLOOOOO"
@@ -38,7 +48,8 @@ app.all "/update", (req, res) ->
 
 # HTML5 geolocation page for trackers
 app.get "/webtracker", (req, res) ->
-    res.render "webtracker"
+    res.render "webtracker",
+        sid: req.sessionID
 
 # Listen to port
 port = process.env.PORT || 3000
@@ -48,6 +59,7 @@ listener = app.listen port, ->
 # Socket IO
 socket = require("socket.io")
 io = socket.listen(listener)
+io.set "log level", 2
 
 # Connect to Socket IO
 io.sockets.on "connection", (socket) ->

@@ -5,6 +5,7 @@ html
     body
         script(src="/socket.io/socket.io.js")
         script
+            var sid = "#{sid}";
             var socket = io.connect();
             socket.on('connect', function(data){
                 var status = document.getElementById("status");
@@ -18,8 +19,9 @@ html
                             var date = new Date();
                             date = date.toISOString();
                             console.log("UPDATE (" + date + "): " + pos);
-                            status.innerHTML = "Date: " + date + "<br>Latitude: " + pos.coords.latitude + "<br>Longitude: " + pos.coords.longitude;
-                            socket.emit('position update', {"timestamp": pos.timestamp,
+                            status.innerHTML = "Sid: " + sid + "<br>Date: " + date + "<br>Latitude: " + pos.coords.latitude + "<br>Longitude: " + pos.coords.longitude;
+                            socket.emit('position update', {"sid": sid,
+                                                            "timestamp": pos.timestamp,
                                                             "latitude": pos.coords.latitude,
                                                             "longitude": pos.coords.longitude,
                                                             "accuracy": pos.coords.accuracy });
@@ -27,12 +29,10 @@ html
                         function(err){
                             //err
                             console.log("ERROR: (" + err.code + ") " + err.message);
-                            status.innerHTML = err;
+                            status.innerHTML = "ERROR: (" + err.code + ") " + err.message;
                         },
                         {enableHighAccuracy:true,
-                         maximumAge:30000,
-                         timeout:27000,
-                         frequency:3000});
+                         maximumAge:30000});
                 }
                 else{
                     //no geo

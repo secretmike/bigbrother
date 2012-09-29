@@ -1,0 +1,40 @@
+!!!
+html
+    head
+        title Trackers - Big Brother
+        link(href="/css/style.css", rel="stylesheet")
+        link(href="/css/bootstrap.min.css", rel="stylesheet")
+        script(src="jscolor/jscolor.js")
+    body
+        .container-fluid
+            header
+                h1 BigBrother
+                #right
+                    ul#main-menu.nav.nav-pills
+                        li
+                            a(href="/") Map
+                        li.active
+                            a(href="/trackers") Trackers
+                .clear
+                
+                form
+                    table.table
+                        tr
+                            th Device ID
+                            th Pin
+                            th Line Colour
+                        each tracker in ["8aj3al29"]
+                            tr
+                                td #{tracker}
+                                td
+                                    select.pin(name="#{tracker}_pin")
+                                        each pin in ["RedPin", "Car", "BluePin"]
+                                            option(value="#{pin}") #{pin}
+                                td
+                                    input(name="#{tracker}_colour", class="color")
+                                
+                            
+                    
+        
+        script(src="http://code.jquery.com/jquery-1.8.2.min.js")
+        script(src="/js/trackers.js")
