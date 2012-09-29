@@ -12,7 +12,7 @@ class Mappy
             $self.pushLocation(data.latitude,data.longitude,data.sid)
 
         @socket.on "request colour", (data) ->
-            $self.getColor(data.sid)
+            $self.getColour(data.sid)
 
         @socket.on "request pin", (data) ->
             $self.getPin(data.sid)
@@ -23,7 +23,10 @@ class Mappy
         time = Math.round(+new Date()/1000)
 
         # Create the point array
-        point = {"lat": lat, "long": long, "timestamp": time}
+        point =
+            lat: lat
+            long: long
+            timestamp: time
 
         # Store it in redis
         @add(sid, point)
@@ -37,7 +40,7 @@ class Mappy
     createTracker: (sid, data) ->
         return @redis.hmset sid, data
 
-    getColor: (sid) ->
+    getColour: (sid) ->
         return @redis.hget sid, "colour"
 
     getPin: (sid) ->
