@@ -26,7 +26,7 @@ html
                         },
                         function(err){
                             //err
-                            console.log("ERROR: " + err);
+                            console.log("ERROR: (" + err.code + ") " + err.message);
                             status.innerHTML = err;
                         },
                         {enableHighAccuracy:true,
