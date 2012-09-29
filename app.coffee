@@ -37,6 +37,12 @@ app.use express.static(__dirname + "/public")
 app.get "/", (req, res) ->
     res.render "index"
 
+# Update URL for adding new data
+app.get "/update", (req, res) ->
+    console.log req.params
+    res.send "OK"
+
 # Listen to port
 port = process.env.PORT || 3000
-app.listen port
+app.listen port, ->
+    console.log "Server running on " + port
