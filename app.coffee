@@ -25,7 +25,11 @@ app.use express.static(__dirname + "/public")
 # ExpressJS Routes
 ####################################
 app.get "/", (req, res) ->
+<<<<<<< HEAD
     res.render "index"
+=======
+    res.render 'index'
+>>>>>>> 78fbcdfd86ddfcd4c20c8a61ec7612d845ddf0ad
 
 # Listen to port
 app.listen 3000
