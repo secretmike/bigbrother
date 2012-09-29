@@ -1,5 +1,22 @@
+
+h1
+{
+    float: left;
+}
+
+#main-menu
+{
+    float: right;
+}
+
+.clear
+{
+    clear: both;
+}
+
+
+
 #map
 {
-    width: 500px;
-    height: 360px;
+    height: 600px;
 }
