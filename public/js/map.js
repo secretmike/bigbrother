@@ -1,5 +1,8 @@
 $(function()
 {
+    var marker_img = "/marker.png";
+    var marker_active_img = "/marker_active.png";
+    
     //
     // Map
     //
@@ -34,14 +37,37 @@ $(function()
        console.log("Lost server connection");
     });
     
-    socket.on("new point", function(e) {
-        console.log(e);
-        addMarker(e.log, e.lat);
-    });
-    
+    /*
     socket.on("new line", function(e) {
         console.log(e);
         addLine(e);
+    });
+    */
+    
+    //
+    // Point receive
+    //
+    
+    var lastPoint = null;
+    socket.on("new point", function(e) {
+        console.log(e);
+        
+        var marker = addMarker(e.log, e.lat);
+        marker.setUrl(marker_active_img);
+        
+        if (lastPoint == null)
+        {
+            lastPoint = {"point": e, "marker": marker};
+            return;
+        }
+        
+        lastPoint.marker.setUrl(marker_img);
+        addLine([
+            e,
+            lastPoint.point
+        ]);
+        
+        lastPoint = {"point": e, "marker": marker};
     });
     
     
@@ -80,7 +106,9 @@ $(function()
     var addMarker = function(lon, lat) {
         var pos = new OpenLayers.LonLat(lon, lat).transform(fromProjection,
                                                             toProjection);
-        markers.addMarker(new OpenLayers.Marker(pos));
+        var marker = new OpenLayers.Marker(pos);
+        markers.addMarker(marker);
+        return marker;
     }
     
     
