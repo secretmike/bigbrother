@@ -36,7 +36,7 @@ app.get "/trackers", (req, res) ->
 
 app.post "/trackers/pin", (req, res) ->
     # TODO:  Client sends the fields: id (the session id), pin (the pin)
-    
+
 app.post "/trackers/colour", (req, res) ->
     # TODO:  Client sends the fields: id (the session id), colour (the colour)
 
@@ -70,6 +70,6 @@ io.sockets.on "connection", (socket) ->
     mappy = map.init socket
 
     # Push locations
-    map.pushLocation(44.643987,-63.572903, "test")
+    map.pushLocation(44.643987,-63.572903, "track:0001")
 
-    map.createTracker('0001', {"name":"billy","colour":"ff0000","pin":"male"})
+    map.createTracker('0001', 'billy', 'ff0000', 'male')

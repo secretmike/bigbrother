@@ -37,22 +37,25 @@ class Mappy
             lat: lat
             sid: sid
 
-    createTracker: (sid, data) ->
-        return @redis.hmset sid, data
+    createTracker: (sid, name, colour, pin) ->
+        @redis.hset "tracks:"+sid, "name", name
+        @redis.hset "tracks:"+sid, "colour", colour
+        @redis.hset "tracks:"+sid, "pin", pin
 
     getColour: (sid) ->
-        return @redis.hget sid, "colour"
+        return @redis.hget "tracks:"+sid, "colour"
 
     getPin: (sid) ->
-        return @redis.hget sid, "pin"
+        return @redis.hget "tracks:"+sid, "pin"
 
     add: (sid, point) ->
         # Add point to end of redis for sid
-        return @redis.rpush sid, JSON.stringify(point)
+        return @redis.rpush "points:"+sid, JSON.stringify(point)
 
     clear: (sid) ->
         # Delete all points for a sid (and from redis)
-        return @redis.del sid
+        return @redis.del "tracks:"+sid
+        return @redis.del "points:"+sid
 
 
 module.exports = new Mappy
