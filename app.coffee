@@ -60,6 +60,13 @@ socket = require("socket.io")
 io = socket.listen(listener)
 io.sockets.on "connection", (socket) ->
     console.log "SocketIO Connection"
+    
+    socket.on "request pin", (data) ->
+        console.log data
+        #TODO: GET FROM REDIS
+        socket.emit "pin",
+            sid: data.sid
+            pin: "male"
 
     socket.on "position update", (data) ->
         console.log data
@@ -69,14 +76,17 @@ io.sockets.on "connection", (socket) ->
             lat: data.latitude
 
     socket.emit "new point",
+        sid: "test"
         log: -63.572903
         lat: 44.643987
 
     socket.emit "new point",
+        sid: "test"
         log: -63.579791
         lat: 44.647895
 
     socket.emit "new point",
+        sid: "test"
         log: -63.587880
         lat: 44.644872
 

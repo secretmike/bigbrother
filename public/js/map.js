@@ -1,6 +1,7 @@
 $(function()
 {
     var lastPoint = null;
+    var trackers  = {};
     
     //
     // Map
@@ -29,11 +30,11 @@ $(function()
     var socket = io.connect();
 
     socket.on("connect", function(e) {
-
+        
     });
     
     socket.on("reconnect", function(e) {
-        lastPoint = null;
+        trackers = {};
         markers.clearMarkers();
         lines.removeAllFeatures(); 
     });
@@ -54,26 +55,78 @@ $(function()
     //
     socket.on("new point", function(e) {
         console.log(e);
+        var sid = e.sid;
+        provisionSid(sid);
         
         var marker = addMarker(e.log, e.lat);
+        
         var markerPosition = getPosition(e.log, e.lat);
         map.setCenter(markerPosition, zoom);
         
-        if (lastPoint == null)
+        if (trackers[sid].last.point == null)
         {
-            lastPoint = {"point": e, "marker": marker};
+            trackers[sid].last.point = e;
+            trackers[sid].last.marker = marker;
+            requestPin(sid);
             return;
         }
         
-        removeMarker(lastPoint.marker);
+        removeMarker(trackers[sid].last.marker);
         addLine([
             e,
-            lastPoint.point
+            trackers[sid].last.point
         ]);
         
-        lastPoint = {"point": e, "marker": marker};
+        trackers[sid].last.point = e;
+        trackers[sid].last.marker = marker;
+        requestPin(sid);
     });
     
+    //
+    // Provision SID
+    //
+    var provisionSid = function(sid)
+    {
+        if (sid in trackers) {
+            return;
+        }
+        trackers[sid] = {
+            last: {
+                point: null,
+                marker: null
+            },
+            pin: null
+        };
+    };
+    
+    //
+    // Pins
+    //
+    var requestPin = function(sid)
+    {
+        if(trackers[sid].pin != null)
+        {
+            return;
+        }
+        socket.emit("request pin", {"sid": sid});
+        return;
+    };
+    
+    var setMarkerPin = function(sid)
+    {
+        if (trackers[sid].last.marker == null)
+        {
+            return;
+        }
+        var pin = trackers[sid].pin;
+        
+        trackers[sid].last.marker.setUrl(pin + ".png");
+    };
+    
+    socket.on("pin", function(e) {
+        trackers[e.sid].pin = e.pin;
+        setMarkerPin(e.sid);
+    });
     
     //
     // Lines
@@ -104,9 +157,8 @@ $(function()
     };
     
     //
+    // Position
     //
-    //
-    
     var getPosition = function(lon, lat) {
         return new OpenLayers.LonLat(lon, lat).transform(fromProjection,
                                                          toProjection);
