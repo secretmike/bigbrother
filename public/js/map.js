@@ -1,7 +1,6 @@
 $(function()
 {
-    var marker_img = "/marker.png";
-    var marker_active_img = "/marker_active.png";
+    var lastPoint = null;
     
     //
     // Map
@@ -30,7 +29,13 @@ $(function()
     var socket = io.connect();
 
     socket.on("connect", function(e) {
-        console.log(e);
+
+    });
+    
+    socket.on("reconnect", function(e) {
+        lastPoint = null;
+        markers.clearMarkers();
+        lines.removeAllFeatures(); 
     });
 
     socket.on("disconnect", function(e) {
@@ -47,13 +52,10 @@ $(function()
     //
     // Point receive
     //
-    
-    var lastPoint = null;
     socket.on("new point", function(e) {
         console.log(e);
         
         var marker = addMarker(e.log, e.lat);
-        marker.setUrl(marker_active_img);
         
         if (lastPoint == null)
         {
@@ -61,7 +63,7 @@ $(function()
             return;
         }
         
-        lastPoint.marker.setUrl(marker_img);
+        removeMarker(lastPoint.marker);
         addLine([
             e,
             lastPoint.point
@@ -109,7 +111,11 @@ $(function()
         var marker = new OpenLayers.Marker(pos);
         markers.addMarker(marker);
         return marker;
-    }
+    };
+    
+    var removeMarker = function(marker) {
+        markers.removeMarker(marker);
+    };
     
     
     //
