@@ -1,4 +1,7 @@
-map = new OpenLayers.Map("map");
+//
+// Map
+//
+var map = new OpenLayers.Map("map");
 map.addLayer(new OpenLayers.Layer.OSM());
 var mapnik         = new OpenLayers.Layer.OSM();
 var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
@@ -9,4 +12,15 @@ var zoom           = 15;
 map.addLayer(mapnik);
 map.setCenter(position, zoom);
 
+//
+// Sockets
+//
+var socket = io.connect();
 
+socket.on("connect", function(e) {
+    console.log(e);
+});
+
+socket.on("disconnect", function(e) {
+   console.log("Lost server connection"); 
+});

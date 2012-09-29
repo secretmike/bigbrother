@@ -34,5 +34,15 @@ app.get "/update", (req, res) ->
 
 # Listen to port
 port = process.env.PORT || 3000
-app.listen port, ->
+listener = app.listen port, ->
     console.log "Server running on " + port
+
+###
+# Socket.IO
+###
+
+
+socket = require("socket.io")
+io = socket.listen(listener)
+io.sockets.on "connection", (socket) ->
+    console.log "SocketIO Connection"
