@@ -1,0 +1,58 @@
+!!!
+html
+    head
+        title WebTracker
+    body
+        script(src="/socket.io/socket.io.js")
+        script
+            var socket = io.connect();
+            socket.on('connect', function(data){
+                var status = document.getElementById("status");
+                status.innerHTML = "Connected"
+                console.log("Socket.io Connected");
+
+                if(navigator.geolocation){
+                    console.log("Geo Available")
+                    navigator.geolocation.watchPosition(
+                        function(pos){
+                            var date = new Date();
+                            date = date.toISOString();
+                            console.log("UPDATE (" + date + "): " + pos);
+                            status.innerHTML = "Date: " + date + "<br>Latitude: " + pos.coords.latitude + "<br>Longitude: " + pos.coords.longitude;
+                            socket.emit('position update', {"timestamp": pos.timestamp,
+                                                            "latitude": pos.coords.latitude,
+                                                            "longitude": pos.coords.longitude,
+                                                            "accuracy": pos.coords.accuracy });
+                        },
+                        function(err){
+                            //err
+                            console.log("ERROR: " + err);
+                            status.innerHTML = err;
+                        },
+                        {enableHighAccuracy:true,
+                         maximumAge:30000,
+                         timeout:27000,
+                         frequency:3000});
+                }
+                else{
+                    //no geo
+                    console.log("Geo NOT Available")
+                    status.innerHTML = "No geolocation api available";
+                }
+            });
+
+
+        script
+            function update_location(){
+                var status = document.getElementById("status");
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position){
+                        status.innerHTML="Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+                    });
+                }
+                else{
+                    status.innerHTML="Geolocation is not supported by this browser.";
+                }
+            }
+
+        #status
