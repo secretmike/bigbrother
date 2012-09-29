@@ -26,5 +26,18 @@ $(function()
     socket.on("disconnect", function(e) {
        console.log("Lost server connection"); 
     });
-
+    
+    
+    //
+    // Map Size
+    //
+    var updateMapSize = function() {        
+        var newMapHeight = Math.max($(window).height() - $("header").height()
+            - 10, 0);
+        $("#map").css("height", newMapHeight + "px");
+        map.updateSize();
+    };
+    updateMapSize();
+    
+    $(window).resize(updateMapSize);
 });
