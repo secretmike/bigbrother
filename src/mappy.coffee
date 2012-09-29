@@ -3,6 +3,8 @@ class Mappy
     constructor: (@tracker) ->
         # Get redis
         @redis = require('./lib/redis.coffee')
+        @socket = require("socket.io")
+        @io = @socket.listen(module.exports.listener)
 
     add: (point) ->
         # Add point to end of redis for tracker
