@@ -217,7 +217,7 @@ $(function()
     //
     var updateMapSize = function() {        
         var newMapHeight = Math.max($(window).height() - $("header").height()
-            - 10, 0);
+            - 10, 100);
         $("#map").css("height", newMapHeight + "px");
         map.updateSize();
     };
