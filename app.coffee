@@ -42,7 +42,7 @@ app.get "/webtracker", (req, res) ->
 
 # Listen to port
 port = process.env.PORT || 3000
-module.exports.listener = app.listen port, ->
+listener = app.listen port, ->
     console.log "Server running on " + port
 
 ###
