@@ -48,4 +48,9 @@ socket = require("socket.io")
 io = socket.listen(listener)
 io.sockets.on "connection", (socket) ->
     console.log "SocketIO Connection"
-    # TODO:  send redis data to client
+    
+    socket.emit "new point",
+        log: -63.572903
+        lat: 44.643987
+    
+    # TODOs:  send redis data to client
