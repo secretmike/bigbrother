@@ -19,7 +19,7 @@ html
                             var date = new Date();
                             date = date.toISOString();
                             console.log("UPDATE (" + date + "): " + pos);
-                            status.innerHTML = "Date: " + date + "<br>Latitude: " + pos.coords.latitude + "<br>Longitude: " + pos.coords.longitude;
+                            status.innerHTML = "Sid: " + sid + "<br>Date: " + date + "<br>Latitude: " + pos.coords.latitude + "<br>Longitude: " + pos.coords.longitude;
                             socket.emit('position update', {"sid": sid,
                                                             "timestamp": pos.timestamp,
                                                             "latitude": pos.coords.latitude,
