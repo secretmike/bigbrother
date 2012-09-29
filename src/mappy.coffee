@@ -5,15 +5,17 @@ class Mappy
         # Get redis
         @redis = require('./../lib/redis.coffee')
 
+        $self = @
+
         # Listen for the position update and call required functions
         @socket.on "position update", (data) ->
-            @pushLocation(data.latitude,data.longitude,data.sid)
+            $self.pushLocation(data.latitude,data.longitude,data.sid)
 
         @socket.on "request colour", (data) ->
-            @getColor(data.sid)
+            $self.getColor(data.sid)
 
         @socket.on "request pin", (data) ->
-            @getPin(dats.sid)
+            $self.getPin(data.sid)
 
 
     pushLocation: (lat,long,sid) ->
@@ -36,10 +38,10 @@ class Mappy
         return @redis.hmset sid, data
 
     getColor: (sid) ->
-        return @redis.hget sid, color
+        return @redis.hget sid, "colour"
 
     getPin: (sid) ->
-        return @redis.hget sid, pin
+        return @redis.hget sid, "pin"
 
     add: (sid, point) ->
         # Add point to end of redis for sid
