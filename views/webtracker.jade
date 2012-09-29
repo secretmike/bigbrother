@@ -29,7 +29,7 @@ html
                         function(err){
                             //err
                             console.log("ERROR: (" + err.code + ") " + err.message);
-                            status.innerHTML = err;
+                            status.innerHTML = "ERROR: (" + err.code + ") " + err.message;
                         },
                         {enableHighAccuracy:true,
                          maximumAge:30000,
