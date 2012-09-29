@@ -38,7 +38,7 @@ class Mappy
         return @redis.hmset sid, data
 
     getColor: (sid) ->
-        return @redis.hget sid, "color"
+        return @redis.hget sid, "colour"
 
     getPin: (sid) ->
         return @redis.hget sid, "pin"
