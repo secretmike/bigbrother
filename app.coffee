@@ -53,4 +53,12 @@ io.sockets.on "connection", (socket) ->
         log: -63.572903
         lat: 44.643987
     
+    socket.emit "new line", [
+        log: -63.572903
+        lat: 44.643987
+    ,
+        log: -63.579791
+        lat: 44.647895
+    ]
+    
     # TODOs:  send redis data to client
