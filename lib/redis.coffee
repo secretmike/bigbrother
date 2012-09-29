@@ -12,4 +12,4 @@ else
 #
 # Example
 #
-# var redis = require('/lib/redis.coffee')
+# var redis = require('./lib/redis.coffee')
