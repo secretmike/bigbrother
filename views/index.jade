@@ -3,19 +3,21 @@ html
     head
         title Test
         link(href="/css/style.css", rel="stylesheet")
-        link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css", rel="stylesheet")
+        link(href="/css/bootstrap.min.css", rel="stylesheet")
+        //link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css", rel="stylesheet")
         
     body
         .container-fluid
             header
                 h1 BigBrother
-                ul#main-menu.nav.nav-pills
-                    li.active
-                        a(href="#") Home
-                    li
-                        a(href="#") Item
-                    li
-                        a(href="#") Item
+                #right
+                    ul#main-menu.nav.nav-pills
+                        li.active
+                            a(href="#") Home
+                        li
+                            a(href="#") Item
+                        li
+                            a(href="#") Item
                 .clear
             
             #map
