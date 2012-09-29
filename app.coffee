@@ -55,7 +55,7 @@ io.sockets.on "connection", (socket) ->
 
     socket.on "position update", (data) ->
         console.log data
-        socket.emit "new point",
+        socket.broadcast.emit "new point",
             log: data.longitude
             lat: data.latitude
     
