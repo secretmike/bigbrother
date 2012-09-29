@@ -32,7 +32,10 @@ app.get "/", (req, res) ->
 
 # Tracker configuration
 app.get "/trackers", (req, res) ->
-    res.render "trackers"
+    res.render "trackers" # TODO:  fetch from redis
+
+app.post "/trackers", (req, res) ->
+    # TODO:  Client sends the fields: id (the session id), pin (the pin)
 
 # Update URL for adding new data
 app.all "/update", (req, res) ->

@@ -3,9 +3,7 @@ html
     head
         title Trackers - Big Brother
         link(href="/css/style.css", rel="stylesheet")
-        link(href="/css/bootstrap.min.css", rel="stylesheet")
-        //link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css", rel="stylesheet")
-        
+        link(href="/css/bootstrap.min.css", rel="stylesheet")        
     body
         .container-fluid
             header
@@ -23,17 +21,16 @@ html
                         tr
                             th Device ID
                             th Pin
-                        each tracker in [1]
+                        each tracker in ["8aj3al29"]
                             tr
-                                td "TRACKER ID"
+                                td #{tracker}
                                 td
-                                    select
+                                    select(name="#{tracker}")
                                         each pin in ["RedPin", "Car", "BluePin"]
-                                            option(value="#{tracker}_PIN") #{pin}
+                                            option(value="#{pin}") #{pin}
                                 
                             
                     
         
         script(src="http://code.jquery.com/jquery-1.8.2.min.js")
-        //script(src="/netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/js/bootstrap.min.js")
-        script(src="/js/socket.io.min.js")
+        script(src="/js/trackers.js")
