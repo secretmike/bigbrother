@@ -54,13 +54,13 @@ app.all "/update", (req, res) ->
 #  charging: '0',
 #  deviceid: '355266040354407',
 #  subscriberid: '302220300261101' }
-    console.log "HELLOOOOO"
-    console.log req.query, req.body
-    io.sockets.emit "new point",
-            sid: req.body.deviceid
-            log: req.body.longitude
-            lat: req.body.latitude
-
+    console.log "UPDATE", req.query, req.body
+    io.sockets.emit "position update",
+        sid: req.body.deviceid
+        timestamp: req.body.time
+        accuracy: req.body.accuracy
+        longitude: req.body.longitude
+        latitude: req.body.latitude
     res.send "OK"
 
 # HTML5 geolocation page for trackers
