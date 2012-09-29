@@ -2,11 +2,13 @@
 if process.env.REDISTOGO_URL
     # production
     rtg = require("url").parse(process.env.REDISTOGO_URL)
-    module.exports = require("redis").createClient(rtg.port, rtg.hostname)
+    redis = require("redis").createClient(rtg.port, rtg.hostname)
     redis.auth rtg.auth.split(":")[1]
 else
     # local
-    module.exports = require("redis").createClient()
+    redis = require("redis").createClient()
+
+module.exports = redis
 
 # Requiring this file by a variable will assign redis to that variable
 #

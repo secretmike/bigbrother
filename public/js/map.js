@@ -3,17 +3,24 @@ $(function()
     //
     // Map
     //
-    var map = new OpenLayers.Map("map");
+    var map            = new OpenLayers.Map("map");
     map.addLayer(new OpenLayers.Layer.OSM());
     var mapnik         = new OpenLayers.Layer.OSM();
-    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-    var position       = new OpenLayers.LonLat(-63.572903,44.643987).transform( fromProjection, toProjection);
+    var fromProjection = new OpenLayers.Projection("EPSG:4326");
+    var toProjection   = new OpenLayers.Projection("EPSG:900913");
+    var position       = new OpenLayers.LonLat(-63.572903, 44.643987).transform
+                                               (fromProjection, toProjection);
     var zoom           = 15;
+    var markers        = new OpenLayers.Layer.Markers("Markers");
+    map.addLayer(markers);
+    
+    var lines          = new OpenLayers.Layer.Vector("Lines");
+    map.addLayer(lines);
 
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
-
+    
+    
     //
     // Sockets
     //
@@ -29,7 +36,52 @@ $(function()
     
     socket.on("new point", function(e) {
         console.log(e);
+        addMarker(e.log, e.lat);
     });
+    
+    socket.on("new line", function(e) {
+        console.log(e);
+        addLine(e);
+    });
+    
+    
+    //
+    // Lines
+    //
+    var addLine = function(points)
+    {
+        points = new Array(
+            new OpenLayers.Geometry.Point(points[0].log, points[0].lat),
+            new OpenLayers.Geometry.Point(points[1].log, points[1].lat)
+        );
+        
+        for(var i = 0; i < points.length; i++)
+        {
+            points[i].transform(new OpenLayers.Projection("EPSG:4326"),
+                                map.getProjectionObject());
+        }
+        var line = new OpenLayers.Geometry.LineString(points);
+        
+        var style = { 
+          strokeColor: '#0000ff', 
+          strokeOpacity: 0.5,
+          strokeWidth: 5
+        };
+
+        
+        var lineFeature = new OpenLayers.Feature.Vector(line, null, style);
+        lines.addFeatures([lineFeature]);
+    };
+    
+    
+    //
+    // Markers
+    //
+    var addMarker = function(lon, lat) {
+        var pos = new OpenLayers.LonLat(lon, lat).transform(fromProjection,
+                                                            toProjection);
+        markers.addMarker(new OpenLayers.Marker(pos));
+    }
     
     
     //
@@ -42,6 +94,7 @@ $(function()
         map.updateSize();
     };
     updateMapSize();
-    
     $(window).resize(updateMapSize);
+    
+    
 });
