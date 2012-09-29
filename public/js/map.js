@@ -24,7 +24,11 @@ $(function()
     });
 
     socket.on("disconnect", function(e) {
-       console.log("Lost server connection"); 
+       console.log("Lost server connection");
+    });
+    
+    socket.on("new point", function(e) {
+        console.log(e);
     });
     
     
