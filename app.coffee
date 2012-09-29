@@ -31,7 +31,7 @@ app.get "/", (req, res) ->
     res.render "index"
 
 # Update URL for adding new data
-app.post "/update", (req, res) ->
+app.all "/update", (req, res) ->
     console.log "HELLOOOOO"
     console.log req.query, req.body
     res.send "OK"
