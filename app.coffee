@@ -38,11 +38,12 @@ app.all "/update", (req, res) ->
 
 # HTML5 geolocation page for trackers
 app.get "/webtracker", (req, res) ->
-    res.render "webtracker"
+    res.render "webtracker",
+        sid: req.sessionID
 
 # Listen to port
 port = process.env.PORT || 3000
-module.exports.listener = app.listen port, ->
+listener = app.listen port, ->
     console.log "Server running on " + port
 
 ###
@@ -56,6 +57,7 @@ io.sockets.on "connection", (socket) ->
     socket.on "position update", (data) ->
         console.log data
         socket.broadcast.emit "new point",
+            sid: data.sid
             log: data.longitude
             lat: data.latitude
 
