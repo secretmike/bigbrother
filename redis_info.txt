@@ -1,0 +1,3 @@
+# Redis CLI connect
+
+redis-cli -h fish.redistogo.com -p 9462 -a 99fce2bc3752815f16ad056148b07685
