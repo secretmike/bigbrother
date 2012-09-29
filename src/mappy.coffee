@@ -9,6 +9,7 @@ class Mappy
 
         # Listen for the position update and call required functions
         @socket.on "position update", (data) ->
+            console.log data.latitude,data.longitude
             $self.pushLocation(data.latitude,data.longitude,data.sid)
 
         @socket.on "request colour", (data) ->
@@ -47,6 +48,12 @@ class Mappy
 
     getPin: (sid) ->
         return @redis.hget "tracks:"+sid, "pin"
+
+    setColour: (sid, colour) ->
+        return @redis.hset "tracks:"+sid, "colour", colour
+
+    setPin: (sid, pin) ->
+        return @redis.hset "tracks:"+sid, "pin", pin
 
     add: (sid, point) ->
         # Add point to end of redis for sid

@@ -7,6 +7,9 @@ app = express()
 # Redis Variable
 redis = require './lib/redis.coffee'
 
+# Get mappy
+map = require './src/mappy.coffee'
+
 # Jade Configuration
 app.set "views", __dirname + "/views"
 app.set "view engine", "jade"
@@ -36,6 +39,7 @@ app.get "/trackers", (req, res) ->
 
 app.post "/trackers/pin", (req, res) ->
     # TODO:  Client sends the fields: id (the session id), pin (the pin)
+    map.setPin("test", "green")
 
 app.post "/trackers/colour", (req, res) ->
     # TODO:  Client sends the fields: id (the session id), colour (the colour)
@@ -80,9 +84,6 @@ io.set "log level", 2
 
 # Connect to Socket IO
 io.sockets.on "connection", (socket) ->
-    # Get mappy
-    map = require './src/mappy.coffee'
-
     # Start mappy for tracker
     mappy = map.init socket
 
@@ -90,3 +91,5 @@ io.sockets.on "connection", (socket) ->
     map.pushLocation(44.643987,-63.572903, "track:0001")
 
     map.createTracker('0001', 'billy', 'ff0000', 'male')
+
+    map.setPin("0001", "green")
