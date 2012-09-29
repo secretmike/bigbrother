@@ -30,6 +30,10 @@ app.use express.static(__dirname + "/public")
 app.get "/", (req, res) ->
     res.render "index"
 
+# Tracker configuration
+app.get "/trackers", (req, res) ->
+    res.render "trackers"
+
 # Update URL for adding new data
 app.all "/update", (req, res) ->
     console.log "HELLOOOOO"
