@@ -32,7 +32,7 @@ class Mappy
         @add(sid, point)
 
         # Emit it to socket.io
-        @socket.emit "new point",
+        @socket.broadcast.emit "new point",
             log: long
             lat: lat
             sid: sid
