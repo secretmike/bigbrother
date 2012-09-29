@@ -4,15 +4,8 @@ express = require("express")
 # Create an app variable for express
 app = express()
 
-# Redis variable
-if process.env.REDISTOGO_URL
-    # production
-    rtg = require("url").parse(process.env.REDISTOGO_URL)
-    redis = require("redis").createClient(rtg.port, rtg.hostname)
-    redis.auth rtg.auth.split(":")[1]
-else
-    # local
-    redis = require("redis").createClient()
+# Redis Variable
+redis = require './lib/redis.coffee'
 
 # Jade Configuration
 app.set "views", __dirname + "/views"
@@ -39,7 +32,7 @@ app.get "/", (req, res) ->
 
 # Update URL for adding new data
 app.get "/update", (req, res) ->
-    console.log req.params
+    console.log req.query, req.params
     res.send "OK"
 
 # Listen to port
