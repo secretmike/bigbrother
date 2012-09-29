@@ -48,4 +48,4 @@ socket = require("socket.io")
 io = socket.listen(listener)
 io.sockets.on "connection", (socket) ->
     console.log "SocketIO Connection"
-    // TODO:  send redis data to client
+    #TODO:  send redis data to client
