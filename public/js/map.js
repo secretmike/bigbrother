@@ -31,16 +31,9 @@ $(function()
     //
     // Map Size
     //
-    var oldMapHeight = -1;
-    
     var updateMapSize = function() {        
         var newMapHeight = Math.max($(window).height() - $("header").height()
             - 10, 0);
-        if (newMapHeight == oldMapHeight) {
-            
-            return;
-        }
-        oldMapHeight = newMapHeight;
         $("#map").css("height", newMapHeight + "px");
         map.updateSize();
     };
