@@ -56,6 +56,8 @@ $(function()
         console.log(e);
         
         var marker = addMarker(e.log, e.lat);
+        var markerPosition = getPosition(e.log, e.lat);
+        map.setCenter(markerPosition, zoom);
         
         if (lastPoint == null)
         {
@@ -101,13 +103,20 @@ $(function()
         lines.addFeatures([lineFeature]);
     };
     
+    //
+    //
+    //
+    
+    var getPosition = function(lon, lat) {
+        return new OpenLayers.LonLat(lon, lat).transform(fromProjection,
+                                                         toProjection);
+    };
     
     //
     // Markers
     //
     var addMarker = function(lon, lat) {
-        var pos = new OpenLayers.LonLat(lon, lat).transform(fromProjection,
-                                                            toProjection);
+        var pos = getPosition(lon, lat);
         var marker = new OpenLayers.Marker(pos);
         markers.addMarker(marker);
         return marker;
