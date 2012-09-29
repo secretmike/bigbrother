@@ -42,8 +42,25 @@ app.post "/trackers/colour", (req, res) ->
 
 # Update URL for adding new data
 app.all "/update", (req, res) ->
-    console.log "HELLOOOOO"
-    console.log req.query, req.body
+#{ latitude: '44.64505358596971',
+#  longitude: '-63.572418104813146',
+#  accuracy: '20.0',
+#  altitude: '28.0',
+#  provider: 'gps',
+#  bearing: '258.228',
+#  speed: '0.56682956',
+#  time: '2012-09-29T22:47:01.00Z',
+#  battlevel: '63',
+#  charging: '0',
+#  deviceid: '355266040354407',
+#  subscriberid: '302220300261101' }
+    console.log "UPDATE", req.query, req.body
+    io.sockets.emit "position update",
+        sid: req.body.deviceid
+        timestamp: req.body.time
+        accuracy: req.body.accuracy
+        longitude: req.body.longitude
+        latitude: req.body.latitude
     res.send "OK"
 
 # HTML5 geolocation page for trackers
