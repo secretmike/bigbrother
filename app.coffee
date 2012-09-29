@@ -42,7 +42,7 @@ app.get "/webtracker", (req, res) ->
 
 # Listen to port
 port = process.env.PORT || 3000
-listener = app.listen port, ->
+module.exports.listener = app.listen port, ->
     console.log "Server running on " + port
 
 ###
@@ -58,17 +58,17 @@ io.sockets.on "connection", (socket) ->
         socket.broadcast.emit "new point",
             log: data.longitude
             lat: data.latitude
-    
+
     socket.emit "new point",
         log: -63.572903
         lat: 44.643987
-    
+
     socket.emit "new point",
         log: -63.579791
         lat: 44.647895
-    
+
     socket.emit "new point",
         log: -63.587880
         lat: 44.644872
-    
+
     # TODOs:  send redis data to client
