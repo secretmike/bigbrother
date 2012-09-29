@@ -38,10 +38,10 @@ class Mappy
         return @redis.hmset sid, data
 
     getColor: (sid) ->
-        return @redis.hget sid, color
+        return @redis.hget sid, "color"
 
     getPin: (sid) ->
-        return @redis.hget sid, pin
+        return @redis.hget sid, "pin"
 
     add: (sid, point) ->
         # Add point to end of redis for sid
