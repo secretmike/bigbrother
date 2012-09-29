@@ -36,6 +36,10 @@ app.all "/update", (req, res) ->
     console.log req.query, req.body
     res.send "OK"
 
+# HTML5 geolocation page for trackers
+app.get "/webtracker", (req, res) ->
+    res.render "webtracker"
+
 # Listen to port
 port = process.env.PORT || 3000
 listener = app.listen port, ->
@@ -48,6 +52,12 @@ socket = require("socket.io")
 io = socket.listen(listener)
 io.sockets.on "connection", (socket) ->
     console.log "SocketIO Connection"
+
+    socket.on "position update", (data) ->
+        console.log data
+        socket.broadcast.emit "new point",
+            log: data.longitude
+            lat: data.latitude
     
     socket.emit "new point",
         log: -63.572903
@@ -60,13 +70,5 @@ io.sockets.on "connection", (socket) ->
     socket.emit "new point",
         log: -63.587880
         lat: 44.644872
-    
-    #socket.emit "new line", [
-    #    log: -63.572903
-    #    lat: 44.643987
-    #,
-    #    log: -63.579791
-    #    lat: 44.647895
-    #]
     
     # TODOs:  send redis data to client
