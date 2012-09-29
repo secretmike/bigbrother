@@ -36,6 +36,10 @@ app.all "/update", (req, res) ->
     console.log req.query, req.body
     res.send "OK"
 
+# HTML5 geolocation page for trackers
+app.get "/webtracker", (req, res) ->
+    res.render "webtracker"
+
 # Listen to port
 port = process.env.PORT || 3000
 listener = app.listen port, ->
@@ -48,4 +52,4 @@ socket = require("socket.io")
 io = socket.listen(listener)
 io.sockets.on "connection", (socket) ->
     console.log "SocketIO Connection"
-    // TODO:  send redis data to client
+    # TODO:  send redis data to client
