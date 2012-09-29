@@ -28,4 +28,5 @@ app.get "/", (req, res) ->
     res.render "index"
 
 # Listen to port
-app.listen 3000
+port = process.env.PORT || 3000
+app.listen port
