@@ -32,7 +32,7 @@ app.get "/", (req, res) ->
 
 # Update URL for adding new data
 app.get "/update", (req, res) ->
-    console.log req.params
+    console.log req.query, req.params
     res.send "OK"
 
 # Listen to port
