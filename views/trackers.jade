@@ -28,7 +28,7 @@ html
                                 td #{tracker}
                                 td
                                     select.pin(name="#{tracker}_pin")
-                                        each pin in ["RedPin", "Car", "BluePin"]
+                                        each pin in ["male", "female", "car"]
                                             option(value="#{pin}") #{pin}
                                 td
                                     input(name="#{tracker}_colour", class="color")
