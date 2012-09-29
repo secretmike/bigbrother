@@ -4,6 +4,16 @@ express = require("express")
 # Create an app variable for express
 app = express()
 
+# Redis variable
+if process.env.REDISTOGO_URL
+    # production
+    rtg = require("url").parse(process.env.REDISTOGO_URL)
+    redis = require("redis").createClient(rtg.port, rtg.hostname)
+    redis.auth rtg.auth.split(":")[1]
+else
+    # local
+    redis = require("redis").createClient()
+
 # Jade Configuration
 app.set "views", __dirname + "/views"
 app.set "view engine", "jade"
@@ -17,7 +27,7 @@ app.use express.cookieParser()
 app.use express.bodyParser()
 app.use express.session(secret: "BadWolf")
 
-#app.use(flash());
+# Express Static and Router
 app.use app.router
 app.use express.static(__dirname + "/public")
 
