@@ -31,8 +31,9 @@ app.get "/", (req, res) ->
     res.render "index"
 
 # Update URL for adding new data
-app.get "/update", (req, res) ->
-    console.log req.query, req.params
+app.post "/update", (req, res) ->
+    console.log "HELLOOOOO"
+    console.log req.query, req.body
     res.send "OK"
 
 # Listen to port
