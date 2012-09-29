@@ -2,11 +2,18 @@
 html
     head
         title Test
+        link(href="/css/style.css", rel="stylesheet")
         link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css", rel="stylesheet")
         
     body
-        h1 Test
+        .container-fluid
+            h1 BigBrother
+            
+            #map
         
         script(src="/netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/js/bootstrap.min.js")
-        
-        
+        script(src="http://www.openlayers.org/api/OpenLayers.js")
+        script
+            map = new OpenLayers.Map("map");
+            map.addLayer(new OpenLayers.Layer.OSM());
+            map.zoomToMaxExtent();

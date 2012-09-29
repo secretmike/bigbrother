@@ -9,8 +9,6 @@ app.configure('development', function() {
 });
 
 
-
-
 var server = app.listen(8000);
 console.log('Server listening at http://127.0.0.1:8000/');
 
@@ -18,4 +16,3 @@ console.log('Server listening at http://127.0.0.1:8000/');
 app.get('/', function(req, res) {
     res.render('index');
 });
-
