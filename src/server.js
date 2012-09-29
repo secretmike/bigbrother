@@ -4,6 +4,11 @@ var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
+app.configure('development', function() {
+  app.locals.pretty = true;
+});
+
+
 
 
 var server = app.listen(8000);
