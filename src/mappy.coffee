@@ -13,7 +13,7 @@ class Mappy
             @getColor(data.sid)
 
         @socket.on "request pin", (data) ->
-            @getPin(dats.sid)
+            @getPin(data.sid)
 
 
     pushLocation: (lat,long,sid) ->
