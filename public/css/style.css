@@ -20,3 +20,7 @@ h1
 {
     height: 600px;
 }
+#map img
+{
+    max-width:none;
+}
