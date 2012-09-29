@@ -56,48 +56,20 @@ port = process.env.PORT || 3000
 listener = app.listen port, ->
     console.log "Server running on " + port
 
-###
-# Socket.IO
-###
+# Socket IO
 socket = require("socket.io")
 io = socket.listen(listener)
+io.set "log level", 2
+
+# Connect to Socket IO
 io.sockets.on "connection", (socket) ->
-    console.log "SocketIO Connection"
-    
-    socket.on "request colour", (data) ->
-        console.log data
-        #TODO:  GET FROM REDIS
-        socket.emit "colour",
-            sid: data.sid,
-            colour: "ff0000"
-    
-    socket.on "request pin", (data) ->
-        console.log data
-        #TODO: GET FROM REDIS
-        socket.emit "pin",
-            sid: data.sid
-            pin: "male"
+    # Get mappy
+    map = require './src/mappy.coffee'
 
-    socket.on "position update", (data) ->
-        console.log data
-        socket.broadcast.emit "new point",
-            sid: data.sid
-            log: data.longitude
-            lat: data.latitude
+    # Start mappy for tracker
+    mappy = map.init socket
 
-    socket.emit "new point",
-        sid: "test"
-        log: -63.572903
-        lat: 44.643987
+    # Push locations
+    map.pushLocation(44.643987,-63.572903, "test")
 
-    socket.emit "new point",
-        sid: "test"
-        log: -63.579791
-        lat: 44.647895
-
-    socket.emit "new point",
-        sid: "test"
-        log: -63.587880
-        lat: 44.644872
-
-    # TODOs:  send redis data to client
+    map.createTracker('0001', {"name":"billy","colour":"ff0000","pin":"male"})

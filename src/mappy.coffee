@@ -1,19 +1,53 @@
 # Mappy
 class Mappy
-    constructor: (@tracker) ->
+
+    init: (@socket) ->
         # Get redis
-        @redis = require('./lib/redis.coffee')
-        @socket = require("socket.io")
-        @io = @socket.listen(module.exports.listener)
+        @redis = require('./../lib/redis.coffee')
 
-    add: (point) ->
-        # Add point to end of redis for tracker
-        return @redis.rpush @tracker, point
+        # Listen for the position update and call required functions
+        @socket.on "position update", (data) ->
+            @pushLocation(data.latitude,data.longitude,data.sid)
 
-    getAll: ->
-        # Get all points in an array from tracker
-        return @redis.lrange @tracker, 0, -1
+        @socket.on "request colour", (data) ->
+            @getColor(data.sid)
 
-    clear: ->
-        # Delete all points for a tracker (and from redis)
-        return @redis.del @tracker
+        @socket.on "request pin", (data) ->
+            @getPin(dats.sid)
+
+
+    pushLocation: (lat,long,sid) ->
+        # Timestamp
+        time = Math.round(+new Date()/1000)
+
+        # Create the point array
+        point = {"lat": lat, "long": long, "timestamp": time}
+
+        # Store it in redis
+        @add(sid, point)
+
+        # Emit it to socket.io
+        @socket.emit "new point",
+            log: long
+            lat: lat
+            sid: sid
+
+    createTracker: (sid, data) ->
+        return @redis.hmset sid, data
+
+    getColor: (sid) ->
+        return @redis.hget sid, color
+
+    getPin: (sid) ->
+        return @redis.hget sid, pin
+
+    add: (sid, point) ->
+        # Add point to end of redis for sid
+        return @redis.rpush sid, JSON.stringify(point)
+
+    clear: (sid) ->
+        # Delete all points for a sid (and from redis)
+        return @redis.del sid
+
+
+module.exports = new Mappy
