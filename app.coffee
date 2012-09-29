@@ -34,8 +34,11 @@ app.get "/", (req, res) ->
 app.get "/trackers", (req, res) ->
     res.render "trackers" # TODO:  fetch from redis
 
-app.post "/trackers", (req, res) ->
+app.post "/trackers/pin", (req, res) ->
     # TODO:  Client sends the fields: id (the session id), pin (the pin)
+    
+app.post "/trackers/colour", (req, res) ->
+    # TODO:  Client sends the fields: id (the session id), colour (the colour)
 
 # Update URL for adding new data
 app.all "/update", (req, res) ->
@@ -60,6 +63,13 @@ socket = require("socket.io")
 io = socket.listen(listener)
 io.sockets.on "connection", (socket) ->
     console.log "SocketIO Connection"
+    
+    socket.on "request colour", (data) ->
+        console.log data
+        #TODO:  GET FROM REDIS
+        socket.emit "colour",
+            sid: data.sid,
+            colour: "ff0000"
     
     socket.on "request pin", (data) ->
         console.log data

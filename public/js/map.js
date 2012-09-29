@@ -43,13 +43,6 @@ $(function()
        console.log("Lost server connection");
     });
     
-    /*
-    socket.on("new line", function(e) {
-        console.log(e);
-        addLine(e);
-    });
-    */
-    
     //
     // Point receive
     //
@@ -72,13 +65,16 @@ $(function()
         }
         
         removeMarker(trackers[sid].last.marker);
-        addLine([
+        var line = addLine([
             e,
             trackers[sid].last.point
         ]);
         
+        trackers[sid].lines.unprocessed.push(line);
+        
         trackers[sid].last.point = e;
         trackers[sid].last.marker = marker;
+        requestLines(sid);
         requestPin(sid);
     });
     
@@ -95,6 +91,11 @@ $(function()
                 point: null,
                 marker: null
             },
+            lines: {
+               unprocessed: [],
+               processed: new Array()
+            },
+            colour: null,
             pin: null
         };
     };
@@ -109,7 +110,6 @@ $(function()
             return;
         }
         socket.emit("request pin", {"sid": sid});
-        return;
     };
     
     var setMarkerPin = function(sid)
@@ -127,6 +127,38 @@ $(function()
         trackers[e.sid].pin = e.pin;
         setMarkerPin(e.sid);
     });
+    
+    //
+    // Colors
+    //
+    var requestLines = function(sid)
+    {
+        if(trackers[sid].colour != null)
+        {
+            processLines();
+            return;
+        }
+        socket.emit("request colour", {"sid": sid});
+    };
+    
+    socket.on("colour", function(e)
+    {
+       trackers[e.sid].colour = "#" + e.colour;
+       processLines(e.sid);
+    });
+    
+    var processLines = function(sid)
+    {
+        var colour = trackers[sid].colour;
+        while(trackers[sid].lines.unprocessed.length)
+        {
+            var line = trackers[sid].lines.unprocessed.pop();
+            line.style.strokeColor = colour;
+            lines.drawFeature(line);
+            
+            trackers[sid].lines.processed.push(line);
+        }
+    };
     
     //
     // Lines
@@ -150,10 +182,11 @@ $(function()
           strokeOpacity: 0.5,
           strokeWidth: 5
         };
-
         
         var lineFeature = new OpenLayers.Feature.Vector(line, null, style);
         lines.addFeatures([lineFeature]);
+        
+        return lineFeature;
     };
     
     //
