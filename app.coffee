@@ -61,6 +61,7 @@ listener = app.listen port, ->
 ###
 socket = require("socket.io")
 io = socket.listen(listener)
+io.set "log level", 2
 io.sockets.on "connection", (socket) ->
     console.log "SocketIO Connection"
     
