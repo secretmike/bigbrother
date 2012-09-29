@@ -27,6 +27,10 @@ $(function()
        console.log("Lost server connection"); 
     });
     
+    socket.on("new point", function(e) {
+        console.log(e);
+    });
+    
     
     //
     // Map Size
