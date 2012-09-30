@@ -3,7 +3,7 @@ express = require("express")
 
 # Redis Variable
 redis = require './lib/redis.coffee'
-RedisSessionStore = require('connect-redis')(express)
+#RedisSessionStore = require('connect-redis')(express)
 
 # Create an app variable for express
 app = express()
@@ -25,7 +25,7 @@ app.use express.bodyParser()
 #app.use express.session(store: new RedisSessionStore({ttl: 60 * 30}),
 #                         secret: "BadWolf")
 app.use express.session(
-  store: new RedisSessionStore(ttl: 60 * 30)
+#  store: new RedisSessionStore(ttl: 60 * 30)
   secret: "BadWolf"
 )
 
