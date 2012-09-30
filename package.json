@@ -6,6 +6,8 @@
     "jade": "0.27.x",
     "redis": "0.8.x",
     "coffee-script": "1.x",
+    "connect-redis": "1.4.x",
+    "debug": "0.7.x",
     "socket.io": "0.9.x"
   },
   "engines": {

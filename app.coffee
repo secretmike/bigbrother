@@ -1,11 +1,12 @@
 # Express
 express = require("express")
 
-# Create an app variable for express
-app = express()
-
 # Redis Variable
 redis = require './lib/redis.coffee'
+RedisSessionStore = require('connect-redis')(express)
+
+# Create an app variable for express
+app = express()
 
 # Get mappy
 map = require './src/mappy.coffee'
@@ -21,7 +22,12 @@ app.use express.responseTime()
 app.use express.logger()
 app.use express.cookieParser()
 app.use express.bodyParser()
-app.use express.session(secret: "BadWolf")
+#app.use express.session(store: new RedisSessionStore({ttl: 60 * 30}),
+#                         secret: "BadWolf")
+app.use express.session(
+  store: new RedisSessionStore(ttl: 60 * 30)
+  secret: "BadWolf"
+)
 
 # Express Static and Router
 app.use app.router
